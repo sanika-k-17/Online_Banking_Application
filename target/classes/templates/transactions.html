@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transaction History | Online Banking</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef5ff;
+        }
+
+        header {
+            background: #003366;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #003366;
+            color: white;
+            padding: 12px;
+        }
+
+        td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .deposit {
+            color: green;
+            font-weight: bold;
+        }
+
+        .withdraw {
+            color: red;
+            font-weight: bold;
+        }
+
+        .transfer {
+            color: #00509e;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #003366;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-btn:hover {
+            background: #00509e;
+        }
+
+        h2 {
+            text-align: center;
+            color: #003366;
+        }
+
+        .empty {
+            text-align: center;
+            color: gray;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>
+        🏦 Transaction History
+    </h1>
+
+</header>
+
+<div class="container">
+
+    <h2>
+        Your Transactions
+    </h2>
+
+    <table th:if="${!transactions.isEmpty()}">
+
+        <thead>
+
+        <tr>
+            <th>Date & Time</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Description</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        <tr th:each="transaction : ${transactions}">
+
+            <td
+                    th:text="${#temporals.format(transaction.transactionDate, 'dd-MM-yyyy HH:mm')}">
+            </td>
+
+            <td>
+
+                <span
+                        th:text="${transaction.type}"
+                        th:classappend="${transaction.type == 'Deposit' ? 'deposit' : (transaction.type == 'Withdraw' ? 'withdraw' : 'transfer')}">
+                </span>
+
+            </td>
+
+            <td
+                    th:text="${'₹ ' + transaction.amount}">
+            </td>
+
+            <td
+                    th:text="${transaction.description}">
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+    <div
+            class="empty"
+            th:if="${transactions.isEmpty()}">
+
+        No transactions found.
+
+    </div>
+
+    <a
+            th:href="@{/dashboard}"
+            class="back-btn">
+
+        ← Back to Dashboard
+
+    </a>
+
+</div>
+
+</body>
+
+</html>

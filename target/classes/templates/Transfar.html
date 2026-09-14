@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transfer Money | Online Banking</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef5ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 420px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h2 {
+            text-align: center;
+            color: #003366;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        select:focus,
+        input:focus {
+            outline: none;
+            border-color: #00509e;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: #003366;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #00509e;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #003366;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>
+        Transfer Money
+    </h2>
+
+    <p
+            class="error"
+            th:if="${error}"
+            th:text="${error}">
+    </p>
+
+    <form
+            th:action="@{/transfer}"
+            method="post">
+
+        <label>
+            Select Receiver
+        </label>
+
+        <select
+                name="receiverUsername"
+                required>
+
+            <option value="">
+                -- Select Receiver --
+            </option>
+
+            <option
+                    th:each="customer : ${customers}"
+                    th:value="${customer.email}"
+                    th:text="${customer.name + ' (' + customer.email + ')'}">
+            </option>
+
+        </select>
+
+        <label>
+            Transfer Amount
+        </label>
+
+        <input
+                type="number"
+                name="amount"
+                step="0.01"
+                min="0.01"
+                placeholder="Enter Amount"
+                required>
+
+        <button type="submit">
+            Transfer Money
+        </button>
+
+    </form>
+
+    <a
+            th:href="@{/dashboard}"
+            class="back">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+
+</html>
